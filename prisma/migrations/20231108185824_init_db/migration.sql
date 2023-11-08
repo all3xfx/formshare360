@@ -13,7 +13,7 @@ CREATE TABLE "Form" (
 
     CONSTRAINT "Form_pkey" PRIMARY KEY ("id")
 );
-
+ 
 -- CreateTable
 CREATE TABLE "FormSubmissions" (
     "id" SERIAL NOT NULL,

@@ -16,7 +16,6 @@ function Layout({children}: {children: ReactNode}) {
       <main className='flex flex-grow w-full'>
       {children}
       </main>
-      
       </div>
   )
 }
