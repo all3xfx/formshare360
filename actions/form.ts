@@ -42,48 +42,63 @@ export async function GetFormStats() {
   };
 }
 
-export async function CreateForm(data: formSchemaType){
-    const validation = formSchema.safeParse(data);
-    if (!validation.success) {
-        throw new Error("Form not valid")
-    }
+export async function CreateForm(data: formSchemaType) {
+  const validation = formSchema.safeParse(data);
+  if (!validation.success) {
+    throw new Error("Form not valid");
+  }
 
-    const user = await currentUser()
+  const user = await currentUser();
 
-    if (!user) {
-        throw new UserNotFoundErr()
-    }
-    
-    const {name, description} = data;
+  if (!user) {
+    throw new UserNotFoundErr();
+  }
 
-    const form = await prisma.form.create({
-        data: {
-            userId: user.id,
-            name,
-            description
-        }
-    })
-    
-    if (!form) {
-        throw new Error("Something went wrong")
-    }
+  const { name, description } = data;
 
-    return form.id
+  const form = await prisma.form.create({
+    data: {
+      userId: user.id,
+      name,
+      description,
+    },
+  });
+
+  if (!form) {
+    throw new Error("Something went wrong");
+  }
+
+  return form.id;
 }
 
-export async function GetForms(){
-  const user = await currentUser()
+export async function GetForms() {
+  const user = await currentUser();
 
-    if (!user) {
-        throw new UserNotFoundErr()
-    }
+  if (!user) {
+    throw new UserNotFoundErr();
+  }
 
-    return await prisma.form.findMany({
-      where: {
-        userId: user.id
-      },
-      orderBy: {
-        createdAt: "desc"
-      }
-    })
+  return await prisma.form.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}
+
+export async function GetFormById(id: number) {
+  const user = await currentUser();
+
+  if (!user) {
+    throw new UserNotFoundErr();
+  }
+
+  return await prisma.form.findUnique({
+    where: {
+      userId: user.id,
+      id,
+    },
+  });
 }
